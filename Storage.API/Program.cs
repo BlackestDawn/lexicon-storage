@@ -1,4 +1,10 @@
+using Microsoft.EntityFrameworkCore;
+using Storage.API.Data;
+
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<StorageContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("StorageContext")
+    ?? throw new InvalidOperationException("Connection string 'StorageContext' not found.")));
 
 // Add services to the container.
 
