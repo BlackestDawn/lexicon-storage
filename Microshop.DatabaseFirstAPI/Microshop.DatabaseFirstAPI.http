@@ -1,0 +1,6 @@
+@Microshop.DatabaseFirstAPI_HostAddress = http://localhost:5187
+
+GET {{Microshop.DatabaseFirstAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
