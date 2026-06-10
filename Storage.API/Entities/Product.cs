@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Storage.API.Models;
+namespace Storage.API.Entities;
 
 public class Product(string name)
 {
