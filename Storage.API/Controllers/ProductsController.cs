@@ -25,7 +25,7 @@ public class ProductsController(
 
   // GET: api/Products/5
   [HttpGet("{id}")]
-  public async Task<ActionResult<Product>> GetProduct(int id)
+  public async Task<ActionResult<ProductDto>> GetProduct(int id)
   {
     var product = await _context.Product.FindAsync(id);
 
@@ -34,36 +34,23 @@ public class ProductsController(
       return NotFound();
     }
 
-    return product;
+    return Ok(mapper.Map<ProductDto>(product));
   }
 
   // PUT: api/Products/5
   // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
   [HttpPut("{id}")]
-  public async Task<IActionResult> PutProduct(int id, Product product)
+  public async Task<IActionResult> PutProduct(int id, ProductForUpdateDto product)
   {
-    if (id != product.Id)
+    if (!ProductExists(id))
     {
-      return BadRequest();
+      return NotFound();
     }
 
-    _context.Entry(product).State = EntityState.Modified;
+    var productEntity = await _context.Product.FindAsync(id);
+    mapper.Map(productEntity, product);
 
-    try
-    {
-      await _context.SaveChangesAsync();
-    }
-    catch (DbUpdateConcurrencyException)
-    {
-      if (!ProductExists(id))
-      {
-        return NotFound();
-      }
-      else
-      {
-        throw;
-      }
-    }
+    await _context.SaveChangesAsync();
 
     return NoContent();
   }
@@ -71,12 +58,13 @@ public class ProductsController(
   // POST: api/Products
   // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
   [HttpPost]
-  public async Task<ActionResult<Product>> PostProduct(Product product)
+  public async Task<ActionResult<Product>> PostProduct(ProductForCreationDto product)
   {
-    _context.Product.Add(product);
+    var productEntity = mapper.Map<Product>(product);
+    _context.Product.Add(productEntity);
     await _context.SaveChangesAsync();
 
-    return CreatedAtAction("GetProduct", new { id = product.Id }, product);
+    return CreatedAtAction("GetProduct", new { id = productEntity.Id }, productEntity);
   }
 
   // DELETE: api/Products/5

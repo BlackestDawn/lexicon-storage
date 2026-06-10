@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Storage.API.Models;
 
-internal class ProductForCreationDto(string name, decimal price, string category, string? shelf, int count, string? description)
+public class ProductForCreationDto(string name, decimal price, string category, string? shelf, int count, string? description)
 {
   [Required]
   [StringLength(50, MinimumLength = 3)]
