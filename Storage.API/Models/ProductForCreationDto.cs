@@ -2,20 +2,20 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Storage.API.Models;
 
-public class ProductForCreationDto(string name, decimal price, string category, string? shelf, int count, string? description)
+public class ProductForCreationDto
 {
   [Required]
   [StringLength(50, MinimumLength = 3)]
-  public string Name { get; set; } = name;
+  public string Name { get; set; } = string.Empty;
   [Required]
-  public decimal Price { get; set; } = price;
+  public decimal Price { get; set; }
   [Required]
   [StringLength(40, MinimumLength = 3)]
-  public string Category { get; set; } = category;
+  public string Category { get; set; } = string.Empty;
   [StringLength(10, MinimumLength = 3)]
-  public string? Shelf { get; set; } = shelf;
+  public string? Shelf { get; set; }
   [Required]
-  public int Count { get; set; } = count;
+  public int Count { get; set; }
   [StringLength(200, MinimumLength = 3)]
-  public string? Description { get; set; } = description;
+  public string? Description { get; set; }
 }

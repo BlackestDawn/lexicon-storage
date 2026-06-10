@@ -1,11 +1,12 @@
 namespace Storage.API.Models;
 
-public class ProductDto(string name, decimal price, string category, string? shelf, int count, string? description)
+public class ProductDto
 {
-  public string Name { get; set; } = name;
-  public decimal Price { get; set; } = price;
-  public string Category { get; set; } = category;
-  public string? Shelf { get; set; } = shelf;
-  public int Count { get; set; } = count;
-  public string? Description { get; set; } = description;
+  public int Id { get; set; }
+  public string Name { get; set; } = string.Empty;
+  public decimal Price { get; set; }
+  public string Category { get; set; } = string.Empty;
+  public string? Shelf { get; set; }
+  public int Count { get; set; }
+  public string? Description { get; set; }
 }
