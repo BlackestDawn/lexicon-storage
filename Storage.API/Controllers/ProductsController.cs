@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Storage.API.Data;
@@ -5,16 +6,14 @@ using Storage.API.Models;
 
 namespace Storage.API.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ProductsController : ControllerBase
-    {
-        private readonly StorageContext _context;
-
-        public ProductsController(StorageContext context)
-        {
-            _context = context;
-        }
+  [Route("api/[controller]")]
+  [ApiController]
+  public class ProductsController(
+    StorageContext context,
+    IMapper mapper
+  ) : ControllerBase
+  {
+    private readonly StorageContext _context = context;
 
         // GET: api/Products
         [HttpGet]
