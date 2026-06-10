@@ -1,6 +1,9 @@
-@Microshop.DatabaseFirstAPI_HostAddress = http://localhost:5187
+@baseUrl = https://localhost:7234
 
-GET {{Microshop.DatabaseFirstAPI_HostAddress}}/weatherforecast/
+### Get weather
+GET {{baseUrl}}/weatherforecast/
 Accept: application/json
 
-###
+### Get all customers
+GET {{baseUrl}}/api/customers/
+Accept: application/json
