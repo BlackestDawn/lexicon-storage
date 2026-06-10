@@ -3,8 +3,10 @@ using Storage.API.Entities;
 
 namespace Storage.API.Data
 {
-    public class StorageContext(DbContextOptions<StorageContext> options) : DbContext(options)
-    {
+  public class StorageContext(DbContextOptions<StorageContext> options) : DbContext(options)
+  {
     public DbSet<Product> Product { get; set; } = default!;
-    }
+    public DbSet<Order> Order { get; set; } = default!;
+    public DbSet<OrderItem> OrderItem { get; set; } = default!;
+  }
 }
