@@ -7,7 +7,7 @@ using Storage.API.Models;
 
 namespace Storage.API.Controllers;
 
-[Route("api/users/id/orders")]
+[Route("api/users/{customerId}/orders")]
 [ApiController]
 public class OrdersController(
   StorageContext context,
@@ -18,9 +18,10 @@ public class OrdersController(
 
   // GET: api/user/id/orders
   [HttpGet]
-  public async Task<ActionResult<IEnumerable<OrderDto>>> GetOrders()
+  public async Task<ActionResult<IEnumerable<OrderDto>>> GetOrders(Guid customerId)
   {
     var orderEntities = await _context.Order
+      .Where(o => o.CustomerId == customerId)
       .Include(o => o.Items)
       .OrderByDescending(o => o.CreatedAt)
       .ToListAsync();
@@ -29,9 +30,10 @@ public class OrdersController(
 
   // GET: api/user/id/orders/{id}
   [HttpGet("{id}")]
-  public async Task<ActionResult<OrderDto>> GetOrder(int id)
+  public async Task<ActionResult<OrderDto>> GetOrder(Guid customerId, int id)
   {
     var order = await _context.Order
+      .Where(o => o.CustomerId == customerId)
       .Include(o => o.Items)
       .FirstOrDefaultAsync(o => o.Id == id);
 
@@ -45,7 +47,7 @@ public class OrdersController(
 
   // POST: api/users/id/orders
   [HttpPost]
-  public async Task<ActionResult<OrderDto>> PostOrder(OrderForCreationDto order)
+  public async Task<ActionResult<OrderDto>> PostOrder(Guid customerId, OrderForCreationDto order)
   {
     var productIds = order.Items.Select(i => i.ProductId).Distinct().ToList();
     var foundIds = await _context.Product
@@ -60,6 +62,7 @@ public class OrdersController(
     }
 
     var orderEntity = mapper.Map<Order>(order);
+    orderEntity.CustomerId = customerId;
     _context.Order.Add(orderEntity);
     await _context.SaveChangesAsync();
 
@@ -67,11 +70,11 @@ public class OrdersController(
       .Collection(o => o.Items)
       .LoadAsync();
 
-    return CreatedAtAction("GetOrder", new { id = orderEntity.Id }, mapper.Map<OrderDto>(orderEntity));
+    return CreatedAtAction("GetOrder", new { customerId, id = orderEntity.Id }, mapper.Map<OrderDto>(orderEntity));
   }
   // PUT: api/users/id/orders/{id}
   [HttpPut("{id}")]
-  public async Task<IActionResult> PutOrder(int id, OrderForUpdateDto order)
+  public async Task<IActionResult> PutOrder(Guid customerId, int id, OrderForUpdateDto order)
   {
     if (!OrderExists(id))
     {
@@ -91,7 +94,8 @@ public class OrdersController(
     }
 
     var orderEntity = await _context.Order.FindAsync(id);
-    mapper.Map(orderEntity, order);
+    orderEntity!.CustomerId = customerId;
+    mapper.Map(order, orderEntity);
 
     return NoContent();
   }

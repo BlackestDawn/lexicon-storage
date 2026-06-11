@@ -4,6 +4,8 @@ public class OrderDto
 {
   public int Id { get; set; }
   public DateTime CreatedAt { get; set; } = DateTime.Now;
+  public DateTime UpdatedAt { get; set; } = DateTime.Now;
+  public Guid? CustomerId { get; set; }
   public string? Notes { get; set; } = string.Empty;
   public decimal DiscountFixed { get; set; } = 0;
   public decimal DiscountPercent { get; set; } = 0;

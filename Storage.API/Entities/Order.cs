@@ -3,13 +3,18 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Storage.API.Entities;
 
-public class Order
+public class Order : ITrackable
 {
   [Key]
   [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
   public int Id { get; set; }
   [DataType(DataType.DateTime)]
   public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+  [DataType(DataType.DateTime)]
+  public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+  public Guid? CustomerId { get; set; }
+  [ForeignKey("CustomerId")]
+  public Customer? Customer { get; set; }
   [MaxLength(400)]
   public string? Notes { get; set; } = string.Empty;
   public decimal DiscountFixed { get; set; } = 0;

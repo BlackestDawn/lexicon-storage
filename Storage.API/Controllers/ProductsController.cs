@@ -49,7 +49,7 @@ public class ProductsController(
     }
 
     var productEntity = await _context.Product.FindAsync(id);
-    mapper.Map(productEntity, product);
+    mapper.Map(product, productEntity);
 
     await _context.SaveChangesAsync();
 
