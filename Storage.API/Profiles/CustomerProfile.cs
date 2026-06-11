@@ -10,5 +10,7 @@ public class CustomerProfile : Profile
     CreateMap<Models.CustomerDto, Customer>();
     CreateMap<Customer, Models.CustomerDto>();
     CreateMap<Models.CustomerForCreationDto, Customer>();
+    CreateMap<Models.CustomerForUpdateDto, Customer>();
+    CreateMap<Customer, Models.CustomerForUpdateDto>();
   }
 }

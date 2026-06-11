@@ -53,4 +53,25 @@ public class CustomersController(
 
     return CreatedAtAction("GetCustomer", new { id = customerEntity.Id }, mapper.Map<CustomerDto>(customerEntity));
   }
+
+  // POST: api/customers/{id}
+  [HttpPut("{id}")]
+  public async Task<IActionResult> PutCustomer(Guid id, CustomerForUpdateDto customer)
+  {
+    var customerEntity = await _context.Customer.FindAsync(id);
+    if (customerEntity == null)
+    {
+      return NotFound();
+    }
+
+    if (customerEntity.Email != customer.Email && _context.Customer.Any(c => c.Email == customer.Email))
+    {
+      return BadRequest($"Can't change email to someone else's email.");
+    }
+
+    mapper.Map(customer, customerEntity);
+    await _context.SaveChangesAsync();
+
+    return NoContent();
+  }
 }
