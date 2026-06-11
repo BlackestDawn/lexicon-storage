@@ -40,7 +40,7 @@ public class OrdersController(
 
   // POST: api/users/id/orders
   [HttpPost]
-  public async Task<ActionResult<Order>> PostOrder(OrderForCreationDto order)
+  public async Task<ActionResult<OrderDto>> PostOrder(OrderForCreationDto order)
   {
     var productIds = order.Items.Select(i => i.ProductId).Distinct().ToList();
     var foundIds = await _context.Product
@@ -50,7 +50,9 @@ public class OrdersController(
 
     var missingIds = productIds.Except(foundIds).ToList();
     if (missingIds.Count != 0)
+    {
       return BadRequest($"Missing products: {string.Join(", ", missingIds)}");
+    }
 
     var orderEntity = mapper.Map<Order>(order);
     _context.Order.Add(orderEntity);
