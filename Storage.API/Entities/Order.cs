@@ -8,8 +8,22 @@ public class Order
   [Key]
   [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
   public int Id { get; set; }
-  public DateTime Created { get; set; } = DateTime.Now;
+  [DataType(DataType.DateTime)]
+  public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+  [MaxLength(400)]
+  public string? Notes { get; set; } = string.Empty;
+  public decimal DiscountFixed { get; set; } = 0;
+  public decimal DiscountPercent { get; set; } = 0;
+  public bool IsPaid { get; set; } = false;
+  [DataType(DataType.DateTime)]
+  public DateTime? PaidAt { get; set; }
+  public bool IsDelivered { get; set; } = false;
+  [DataType(DataType.DateTime)]
+  public DateTime? DeliveredAt { get; set; }
+  public bool IsRefunded { get; set; } = false;
+  [DataType(DataType.DateTime)]
+  public DateTime? RefundedAt { get; set; }
   public ICollection<OrderItem> Items { get; set; } = [];
   [NotMapped]
-  public decimal Total => Items.Sum(i => i.SubTotal);
+  public decimal Total => (Items.Sum(i => i.SubTotal) - DiscountFixed) * (1 - DiscountPercent);
 }
