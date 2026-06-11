@@ -20,7 +20,10 @@ public class OrdersController(
   [HttpGet]
   public async Task<ActionResult<IEnumerable<OrderDto>>> GetOrders()
   {
-    var orderEntities = await _context.Order.ToArrayAsync();
+    var orderEntities = await _context.Order
+      .Include(o => o.Items)
+      .OrderByDescending(o => o.CreatedAt)
+      .ToListAsync();
     return Ok(mapper.Map<IEnumerable<OrderDto>>(orderEntities));
   }
 
@@ -28,7 +31,9 @@ public class OrdersController(
   [HttpGet("{id}")]
   public async Task<ActionResult<OrderDto>> GetOrder(int id)
   {
-    var order = await _context.Order.FindAsync(id);
+    var order = await _context.Order
+      .Include(o => o.Items)
+      .FirstOrDefaultAsync(o => o.Id == id);
 
     if (order == null)
     {
@@ -57,6 +62,10 @@ public class OrdersController(
     var orderEntity = mapper.Map<Order>(order);
     _context.Order.Add(orderEntity);
     await _context.SaveChangesAsync();
+
+    await _context.Entry(orderEntity)
+      .Collection(o => o.Items)
+      .LoadAsync();
 
     return CreatedAtAction("GetOrder", new { id = orderEntity.Id }, mapper.Map<OrderDto>(orderEntity));
   }
