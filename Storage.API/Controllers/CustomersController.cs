@@ -37,4 +37,20 @@ public class CustomersController(
 
     return Ok(mapper.Map<CustomerDto>(customer));
   }
+
+  // POST: api/customers
+  [HttpPost]
+  public async Task<ActionResult<CustomerDto>> PostCustomer(CustomerForCreationDto customer)
+  {
+    if (_context.Customer.Any(c => c.Email == customer.Email))
+    {
+      return BadRequest($"Customer with email {customer.Email} already exists.");
+    }
+
+    var customerEntity = mapper.Map<Customer>(customer);
+    _context.Customer.Add(customerEntity);
+    await _context.SaveChangesAsync();
+
+    return CreatedAtAction("GetCustomer", new { id = customerEntity.Id }, mapper.Map<CustomerDto>(customerEntity));
+  }
 }
