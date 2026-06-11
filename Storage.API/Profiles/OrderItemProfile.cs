@@ -11,5 +11,8 @@ public class OrderItemProfile : Profile
     CreateMap<OrderItem, Models.OrderItemDto>();
     CreateMap<Models.OrderItemForCreationDto, OrderItem>()
       .ForMember(dest => dest.Product, opt => opt.Ignore());
+    CreateMap<Models.OrderItemForUpdateDto, OrderItem>()
+      .ForMember(dest => dest.Product, opt => opt.Ignore());
+    CreateMap<OrderItem, Models.OrderItemForUpdateDto>();
   }
 }

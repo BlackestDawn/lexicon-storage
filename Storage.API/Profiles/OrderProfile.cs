@@ -10,5 +10,7 @@ public class OrderProfile : Profile
     CreateMap<Models.OrderDto, Order>();
     CreateMap<Order, Models.OrderDto>();
     CreateMap<Models.OrderForCreationDto, Order>();
+    CreateMap<Models.OrderForUpdateDto, Order>();
+    CreateMap<Order, Models.OrderForUpdateDto>();
   }
 }

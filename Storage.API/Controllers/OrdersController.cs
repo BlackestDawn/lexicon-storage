@@ -60,4 +60,35 @@ public class OrdersController(
 
     return CreatedAtAction("GetOrder", new { id = orderEntity.Id }, mapper.Map<OrderDto>(orderEntity));
   }
+  // PUT: api/users/id/orders/{id}
+  [HttpPut("{id}")]
+  public async Task<IActionResult> PutOrder(int id, OrderForUpdateDto order)
+  {
+    if (!OrderExists(id))
+    {
+      return NotFound();
+    }
+
+    var productIds = order.Items.Select(i => i.ProductId).Distinct().ToList();
+    var foundIds = await _context.Product
+      .Where(p => productIds.Contains(p.Id))
+      .Select(p => p.Id)
+      .ToListAsync();
+
+    var missingIds = productIds.Except(foundIds).ToList();
+    if (missingIds.Count != 0)
+    {
+      return BadRequest($"Missing products: {string.Join(", ", missingIds)}");
+    }
+
+    var orderEntity = await _context.Order.FindAsync(id);
+    mapper.Map(orderEntity, order);
+
+    return NoContent();
+  }
+
+  private bool OrderExists(int id)
+  {
+    return _context.Order.Any(e => e.Id == id);
+  }
 }
