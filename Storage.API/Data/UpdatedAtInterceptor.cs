@@ -31,7 +31,13 @@ public class UpdatedAtInterceptor : SaveChangesInterceptor
             .FirstOrDefault(e => e.Entity.Id == entry.Entity.OrderId)?.Entity;
 
         if (order is not null)
-          context.Entry(order).State = EntityState.Modified;
+        {
+          var orderEntry = context.Entry(order);
+          if (orderEntry.State == EntityState.Unchanged)
+          {
+            orderEntry.State = EntityState.Modified;
+          }
+        }
       }
     }
 
