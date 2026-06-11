@@ -8,5 +8,7 @@ public class OrderProfile : Profile
   public OrderProfile()
   {
     CreateMap<Models.OrderDto, Order>();
+    CreateMap<Order, Models.OrderDto>();
+    CreateMap<Models.OrderForCreationDto, Order>();
   }
 }

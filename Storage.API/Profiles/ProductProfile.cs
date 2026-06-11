@@ -8,6 +8,7 @@ internal class ProductProfile : Profile
   public ProductProfile()
   {
     CreateMap<Product, Models.ProductDto>();
+    CreateMap<Models.ProductDto, Product>();
     CreateMap<Models.ProductForUpdateDto, Product>();
     CreateMap<Models.ProductForCreationDto, Product>();
   }
