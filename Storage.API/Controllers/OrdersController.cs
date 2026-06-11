@@ -95,7 +95,7 @@ public class OrdersController(
 
     var orderEntity = await _context.Order.FindAsync(id);
     orderEntity!.CustomerId = customerId;
-    mapper.Map(orderEntity, order);
+    mapper.Map(order, orderEntity);
 
     return NoContent();
   }
