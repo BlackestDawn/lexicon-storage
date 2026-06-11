@@ -74,4 +74,20 @@ public class CustomersController(
 
     return NoContent();
   }
+
+  // DELETE: api/customer/{id}
+  [HttpDelete("{id}")]
+  public async Task<IActionResult> DeleteCustomer(Guid id)
+  {
+    var customer = await _context.Customer.FindAsync(id);
+    if (customer == null)
+    {
+      return NotFound();
+    }
+
+    _context.Customer.Remove(customer);
+    await _context.SaveChangesAsync();
+
+    return NoContent();
+  }
 }
