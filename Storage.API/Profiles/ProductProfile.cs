@@ -1,4 +1,5 @@
 using AutoMapper;
+using Storage.API.Entities;
 
 namespace Storage.API.Profiles;
 
@@ -6,8 +7,9 @@ internal class ProductProfile : Profile
 {
   public ProductProfile()
   {
-    CreateMap<Models.Product, Models.ProductDto>();
-    CreateMap<Models.ProductForUpdateDto, Models.Product>();
-    CreateMap<Models.ProductForCreationDto, Models.Product>();
+    CreateMap<Product, Models.ProductDto>();
+    CreateMap<Models.ProductDto, Product>();
+    CreateMap<Models.ProductForUpdateDto, Product>();
+    CreateMap<Models.ProductForCreationDto, Product>();
   }
 }

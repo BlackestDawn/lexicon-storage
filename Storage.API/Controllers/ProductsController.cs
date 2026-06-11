@@ -2,6 +2,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Storage.API.Data;
+using Storage.API.Entities;
 using Storage.API.Models;
 
 namespace Storage.API.Controllers;
